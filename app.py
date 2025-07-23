@@ -1,15 +1,12 @@
 import streamlit as st
 import docx
 import openai
-import os
 
 st.set_page_config(page_title="Store Performance Analyzer", layout="wide")
 
 # Sidebar for OpenAI API key
 st.sidebar.title("OpenAI API Key")
 api_key = st.sidebar.text_input("Enter your OpenAI API key:", type="password")
-if api_key:
-    openai.api_key = api_key
 
 st.title("📊 Store Performance Analyzer (AI-powered)")
 
@@ -55,13 +52,15 @@ Return your answer in this table format:
 
     if st.button("Analyze with AI"):
         with st.spinner("Analyzing with GPT-4.1..."):
-            response = openai.ChatCompletion.create(
-                model="gpt-4-1106-preview", # or "gpt-4-0125-preview" or latest GPT-4.1 model
+            # Use the new OpenAI API (v1.x+)
+            client = openai.OpenAI(api_key=api_key)
+            response = client.chat.completions.create(
+                model="gpt-4-1106-preview",  # Or use the latest GPT-4.1 model available
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=1500,
                 temperature=0.2
             )
-            result = response['choices'][0]['message']['content']
+            result = response.choices[0].message.content
         st.subheader("Analysis Table")
         st.markdown(result)
 else:
