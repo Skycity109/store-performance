@@ -51,11 +51,10 @@ Return your answer in this table format:
 """
 
     if st.button("Analyze with AI"):
-        with st.spinner("Analyzing with GPT-4.1..."):
-            # Use the new OpenAI API (v1.x+)
+        with st.spinner("Analyzing with GPT-4..."):
             client = openai.OpenAI(api_key=api_key)
             response = client.chat.completions.create(
-                model="gpt-4-1106-preview",  # Or use the latest GPT-4.1 model available
+                model="gpt-4o",  # Use "gpt-4o" for best compatibility
                 messages=[{"role": "user", "content": prompt}],
                 max_tokens=1500,
                 temperature=0.2
@@ -67,4 +66,4 @@ else:
     st.info("Please upload a .docx file and enter your OpenAI API key.")
 
 st.markdown("---")
-st.caption("Powered by Streamlit & GPT-4.1")
+st.caption("Powered by Streamlit & GPT-4o")
